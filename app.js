@@ -40,6 +40,22 @@ router.post('/todos', (ctx) => {
     ctx.status = 200
 })
 
+router.put('/todos/:id', (ctx) => {
+
+    const task = todos.find(t => parseInt(ctx.params.id) === t.id);
+    task.title = 'Update'
+    ctx.body = todos
+
+});
+
+router.delete('/todos/:id', (ctx) => {
+
+    const updatedTodos = todos.filter(t => parseInt(ctx.params.id) !== t.id)
+    ctx.body = updatedTodos
+
+});
+
+
 
 // app.use(async (ctx) => {
 //     ctx.body = { id: 1, product: "iphone"}
