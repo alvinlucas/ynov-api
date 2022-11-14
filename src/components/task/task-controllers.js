@@ -12,8 +12,8 @@ export async function create (ctx){
     const taskValidationSchema = Joi.object({
         title: Joi.string().required(),
         description: Joi.string().required(),
-        taskType: Joi.string().required(),
-        taskDate: Joi.date().timestamp()
+        type: Joi.string().required(),
+        date: Joi.date().timestamp()
 
     })
     const {error} = taskValidationSchema.validate(ctx.request.body)
@@ -29,8 +29,8 @@ export async function update (ctx) {
         const taskValidationSchema = Joi.object({
             title: Joi.string().required(),
             description: Joi.string().required(),
-            taskType: Joi.string().required(),
-            taskDate: Joi.date().timestamp().optional()
+            type: Joi.string().required(),
+            date: Joi.date().timestamp().optional()
         })
        
         const {error} = taskValidate.validate(ctx.request.body);

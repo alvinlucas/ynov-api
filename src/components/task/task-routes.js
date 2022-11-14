@@ -3,9 +3,7 @@ import * as TaskControllers from '#components/task/task-controllers.js'
 
 const tasks = new Router()
 
-tasks.get('/', TaskControllers.index)
-
-tasks.get('/', (ctx) => {
+tasks.get('/', (ctx, next) => {
     ctx.body = todos
 })
 
@@ -17,20 +15,11 @@ tasks.get('/:id', (ctx) => {
 
 tasks.post('/', TaskControllers.create)
 
-tasks.put('/:id', (ctx) => {
 
-    const task = todos.find(t => parseInt(ctx.params.id) === t.id);
-    task.title = ctx.request.body.title
-    ctx.body = todos
+tasks.put('/:id', TaskControllers.update);
 
-});
-
-tasks.delete('/:id', (ctx) => {
-
-    const updatedTodos = todos.filter(t => parseInt(ctx.params.id) !== t.id)
-    ctx.body = updatedTodos
-
-});
+tasks.delete('/:id', TaskControllers.supprimer);
 
 
 export default tasks
+
