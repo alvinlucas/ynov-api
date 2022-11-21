@@ -1,5 +1,6 @@
 import Task from "./task-model.js";
 import Joi from "joi";
+
 export async function index (ctx){
     try{
         ctx.body = await Task.find({})
@@ -17,9 +18,14 @@ export async function create (ctx){
 
     })
     const {error} = taskValidationSchema.validate(ctx.request.body)
-    if(error) throw new Error(error)
+    if(error){ throw new Error(error)
     
     ctx.body = "Works"
+    }else{
+        ctx.body = await Task.create(ctx.request.body)
+    }
+    ctx.body = await Task.find({})
+ 
     } catch (e){
         ctx.badRequest ({ message: e.message})
     }

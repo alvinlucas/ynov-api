@@ -3,13 +3,11 @@ import * as TaskControllers from '#components/task/task-controllers.js'
 
 const tasks = new Router()
 
-tasks.get('/', (ctx, next) => {
-    ctx.body = todos
-})
+tasks.get('/', TaskControllers.index)
 
 tasks.get('/:id', (ctx) => {
 
-    ctx.body = todos.find(t => t.id === parseInt(ctx.params.id));
+    ctx.body = tasks.find(t => t.id === parseInt(ctx.params.id));
 
 });
 

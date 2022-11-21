@@ -11,13 +11,13 @@ const taskSchema = new Schema({
         type: String,
         required: true
     },
-    taskType: {
+    type: {
         type: String,
         required: true
     },
-    taskDate: {
+    date: {
         type: Date,
-        required: true
+        required: false
     }
 })
 
@@ -30,20 +30,20 @@ const findAll = async () => {
 }
 
 const findById = async () => {
-    const task = await Task.findById('63721a7b043bdbd1e536f8c2')
+    const task = await Task.findById('637b35fe40b80fd913a48a24')
     console.log('FIND BY ID =========',task);
 }
 
 const updateById = async () => {
 
-    const task = await Task.findByIdAndUpdate('63721a7b043bdbd1e536f8c2', {name: "Premier élément"})
+    const task = await Task.findByIdAndUpdate('637b35fe40b80fd913a48a24', {name: "Premier élément"})
     console.log('UPADATE BY ID ===========')
 
 findAll()
 }
 
 const deleteById = async () => {
-    const task = await Task.findByIdAndDelete('63721a7b043bdbd1e536f8c2')
+    const task = await Task.findByIdAndDelete('637b35fe40b80fd913a48a24')
 }
 
 findAll()
