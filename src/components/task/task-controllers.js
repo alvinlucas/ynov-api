@@ -47,7 +47,7 @@ export async function update (ctx) {
             date: Joi.date().timestamp().optional()
         })
        
-        const {error} = taskValidate.validate(ctx.request.body);
+        const {error} = taskValidationSchema.validate(ctx.request.body);
         if(error){
             throw new Error(error.message)
         }else{
