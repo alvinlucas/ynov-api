@@ -36,7 +36,7 @@ const findById = async () => {
 
 const updateById = async () => {
 
-    const task = await Task.findByIdAndUpdate('637b35fe40b80fd913a48a24', {name: "Premier élément"})
+    const task = await Task.findByIdAndUpdate('637b35fe40b80fd913a48a24', {title: "Premier élément"})
     console.log('UPADATE BY ID ===========')
 
 findAll()

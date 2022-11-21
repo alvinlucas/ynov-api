@@ -59,4 +59,10 @@ export async function supprimer (ctx) {
         ctx.badRequest({message: err.message});
     }
 }
-
+export async function indexId (ctx){
+    try {
+        ctx.body = await Task.findById(ctx.params.id)
+    }    catch (err) {
+        ctx.badRequest({message: err.message});
+    }
+}

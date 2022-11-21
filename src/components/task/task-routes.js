@@ -5,11 +5,7 @@ const tasks = new Router()
 
 tasks.get('/', TaskControllers.index)
 
-tasks.get('/:id', (ctx) => {
-
-    ctx.body = tasks.find(t => t.id === parseInt(ctx.params.id));
-
-});
+tasks.get('/:id', TaskControllers.indexId);
 
 tasks.post('/', TaskControllers.create)
 
