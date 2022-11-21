@@ -8,6 +8,14 @@ export async function index (ctx){
         ctx.badRequest ({ message: e.message})
     }
 }
+export async function indexId (ctx){
+    try {
+        ctx.body = await Task.findById(ctx.params.id)
+    }    catch (err) {
+        ctx.badRequest({message: err.message});
+    }
+}
+
 export async function create (ctx){
     try{
     const taskValidationSchema = Joi.object({
@@ -56,13 +64,6 @@ export async function supprimer (ctx) {
         ctx.body = await Task.findByIdAndDelete(ctx.params.id);
     }
     catch (err) {
-        ctx.badRequest({message: err.message});
-    }
-}
-export async function indexId (ctx){
-    try {
-        ctx.body = await Task.findById(ctx.params.id)
-    }    catch (err) {
         ctx.badRequest({message: err.message});
     }
 }
