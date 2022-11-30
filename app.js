@@ -1,6 +1,8 @@
 import '#config/database.js'
+import '#config/mailDev.js'
 import Exemple from '#components/exemple/exemple-model.js'
 import Task from '#components/task/task-model.js'
+import User from '#components/user/user-model.js'
 import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import respond from 'koa-respond'

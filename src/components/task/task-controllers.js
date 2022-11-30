@@ -67,3 +67,20 @@ export async function supprimer (ctx) {
         ctx.badRequest({message: err.message});
     }
 }
+export async function getAllByList (ctx) {
+
+    try {
+
+        if(!ctx.params.listId) throw new Error('No id supplied')
+
+        const tasks = await TaskModel.findByListId(ctx.params.listId)
+
+        ctx.ok(tasks)
+
+    } catch (e) {
+
+        ctx.badRequest({ message: e.message })
+
+    }
+
+}
