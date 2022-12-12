@@ -3,7 +3,7 @@ import * as TaskControllers from '#components/task/task-controllers.js'
 import { isAuthenticated, isAuthenticatedWithUser } from '#middlewares/jwt-handler.js'
 
 const tasks = new Router()
-tasks.use(['/','/:id'],isAuthenticatedWithUser)
+tasks.use(['/','/:id'], isAuthenticatedWithUser)
 
 
 tasks.get('/', TaskControllers.index)

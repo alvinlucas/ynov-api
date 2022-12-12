@@ -19,11 +19,16 @@ const taskSchema = new Schema({
         type: Date,
         required: false
     },
-    users: [{
+    user: [{
         type : Schema.Types.ObjectId,
         ref: 'user',
         required : true
       }],
+})
+taskSchema.static({
+    findByUserId(userId){
+        return this.find({user:userId})
+    }
 })
 
 const Task = mongoose.model('task',taskSchema)

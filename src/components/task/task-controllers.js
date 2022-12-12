@@ -3,7 +3,8 @@ import Joi from "joi";
 
 export async function index (ctx){
     try{
-        ctx.body = await Task.find({})
+        const user = ctx.state.user;
+        ctx.body = await Task.findByUserId(user._id);
     } catch (e){
         ctx.badRequest ({ message: e.message})
     }
