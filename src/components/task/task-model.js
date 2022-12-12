@@ -28,6 +28,9 @@ const taskSchema = new Schema({
 taskSchema.static({
     findByUserId(userId){
         return this.find({user:userId})
+    },
+    findByListId(listId){
+        return this.find({list:listId})
     }
 })
 

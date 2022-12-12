@@ -4,7 +4,8 @@ import Joi from "joi";
 export async function index (ctx){
     try{
         const user = ctx.state.user;
-        ctx.body = await Task.findByUserId(user._id);
+        // ctx.body = await Task.findByUserId(user._id);
+        ctx.body = await Task.find({ user : user._id});
     } catch (e){
         ctx.badRequest ({ message: e.message})
     }
@@ -24,16 +25,14 @@ export async function create (ctx){
         description: Joi.string().required(),
         type: Joi.string().required(),
         date: Joi.date().timestamp(),
-        user: Joi.string().required(),
         list: Joi.string().required()
     })
     const {error} = taskValidationSchema.validate(ctx.request.body)
     if(error){ throw new Error(error)
     ctx.body = "Works"
     }else{
-        ctx.body = await Task.create(ctx.request.body)
+        ctx.body = await Task.create({...ctx.request.body, user : ctx.state.user._id})
     }
-    ctx.body = await Task.find({})
     } catch (e){
         ctx.badRequest ({ message: e.message})
     }
