@@ -1,7 +1,9 @@
 import UserModel from '#components/user/user-model.js'
+import TaskModel from '#components/task/task-model.js'
 import Joi from 'joi'
 import argon2, { hash } from 'argon2'
 import { sendWelcomeEmail } from '#services/mailing/welcome-email.js'
+
 
 export async function register(ctx) {
     try {
@@ -78,4 +80,15 @@ export async function login(ctx) {
          } catch(e) {
          ctx.badRequest({ message: e.message })
          }
+         
  }
+export async function getTasksByUser (ctx) {
+     try {
+     const user = await UserModel.findById(ctx.state.user._id).select('+tasks')
+    if(!user) throw new Error('User not found')
+    const tasks = await TaskModel.find({user:ctx.state.user._id})
+     ctx.ok(tasks)
+    } catch(e) {
+         ctx.badRequest({ message: e.message })
+    }
+}

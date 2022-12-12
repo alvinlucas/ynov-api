@@ -1,8 +1,10 @@
 import Router from '@koa/router'
 import * as TaskControllers from '#components/task/task-controllers.js'
-import { isAuthenticated } from '#middlewares/jwt-handler.js'
+import { isAuthenticated, isAuthenticatedWithUser } from '#middlewares/jwt-handler.js'
 
 const tasks = new Router()
+tasks.use(['/','/:id'],isAuthenticatedWithUser)
+
 
 tasks.get('/', TaskControllers.index)
 tasks.get('/protected',isAuthenticated, (ctx) => {

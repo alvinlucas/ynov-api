@@ -4,11 +4,16 @@ import { isAuthenticated, isAuthenticatedWithUser } from '#middlewares/jwt-handl
 
 const users = new Router()
 
+users.use(['/me','/update'],isAuthenticatedWithUser)
+
+
 users.post('/register', UserControllers.register)
 users.post('/login', UserControllers.login)
 users.get('/me',isAuthenticatedWithUser, (ctx) => {
     ctx.ok({ message: 'me route', user: ctx.state.user });
 });
- users.put('/update', isAuthenticatedWithUser, UserControllers.update)
+users.put('/update', isAuthenticatedWithUser, UserControllers.update)
+
+
 
 export default users

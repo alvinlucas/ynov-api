@@ -18,7 +18,12 @@ const taskSchema = new Schema({
     date: {
         type: Date,
         required: false
-    }
+    },
+    users: [{
+        type : Schema.Types.ObjectId,
+        ref: 'user',
+        required : true
+      }],
 })
 
 const Task = mongoose.model('task',taskSchema)

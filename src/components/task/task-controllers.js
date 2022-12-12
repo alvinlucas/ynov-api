@@ -22,18 +22,17 @@ export async function create (ctx){
         title: Joi.string().required(),
         description: Joi.string().required(),
         type: Joi.string().required(),
-        date: Joi.date().timestamp()
-
+        date: Joi.date().timestamp(),
+        user: Joi.string().required(),
+        list: Joi.string().required()
     })
     const {error} = taskValidationSchema.validate(ctx.request.body)
     if(error){ throw new Error(error)
-    
     ctx.body = "Works"
     }else{
         ctx.body = await Task.create(ctx.request.body)
     }
     ctx.body = await Task.find({})
- 
     } catch (e){
         ctx.badRequest ({ message: e.message})
     }
