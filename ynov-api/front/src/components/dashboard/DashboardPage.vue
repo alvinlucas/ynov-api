@@ -1,0 +1,145 @@
+<template>
+  <div class="row">
+    <div class="col">
+    <q-card flat bordered class="my-card bg-grey-1" style="margin-right: 50%;">
+      <q-card-section>
+        <div class="row items-center no-wrap">
+          <div class="col">
+            <h4>Mes listes</h4>
+          </div>
+          <div class="col-auto">
+            <q-btn outline style="color: purple;" label="+" />
+          </div>
+        </div>
+      </q-card-section>
+
+      <q-card-section>
+         <p>Vous n'avez aucune liste créer en une première pour commencer en cliquant sur le bouton +</p>
+      </q-card-section>
+
+      <q-separator />
+      <div v-for="list in listData" :key="list._id">
+      <div >
+      <q-card-actions>
+          <div class="row" >
+          <q-btn flat style="width: 230px">  {{ list.title }}</q-btn>
+        </div>
+      </q-card-actions>
+    </div>
+  </div>
+
+    </q-card>
+    </div>
+    <div class="col" style="margin-top: 110px;" >
+      <h1 style="margin-bottom: 20px;">
+        Hello, {{  userData.email }} 👋
+      </h1>
+
+      <div style="margin-bottom: 20px;">Tu n’as aucune liste de tâche pour le moment créer en une en cliquant sur le bouton ci-dessous dans le menu pour débuter</div>
+    <div class="q-pa-md q-gutter-sm">
+      <q-btn style="background: purple; color: white" label="Créer une liste"  @click="btnListe" />
+  </div>
+
+  <div style="font-weight: bold;margin: 40px;">
+    <div v-for="list in listData" :key="list._id">
+    <q-card class="my-card" style="margin-bottom: 40px;">
+      <q-card-section class="bg-grey text-white">
+        <div class="text-h6" style="text-align: center;">{{list.title}}
+            <q-btn color="white" round flat icon="more_vert">
+              <q-menu cover auto-close>
+                <q-list>
+                  <q-item clickable>
+                    <q-item-section style="color:red">Supprimer liste</q-item-section>
+                  </q-item>
+                  <q-item clickable>
+                    <q-item-section>Modifier liste</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+        </div>
+      </q-card-section>
+
+      <q-card-actions vertical align="center">
+        <q-btn flat>Action 1</q-btn>
+        <q-btn flat>Action 2</q-btn>
+        <q-btn flat>Voir la liste complète</q-btn>
+      </q-card-actions>
+    </q-card>
+
+  </div>
+      </div>
+  </div>
+
+    <div class="col">
+        <q-card class="q-mt-md q-ml-md" style="width:80%">
+          <q-card-section>
+            <h2>Ajouter une liste</h2>
+            <q-input label="Titre" type="text" outlined class="q-mb-md" v-model="listForm.title" />
+            <q-input label="Description" type="text" outlined class="q-mb-md" v-model="listForm.description" />
+            <q-btn label="Créer" class="full-width" color="primary" @click="createList"/>
+          </q-card-section>
+        </q-card>
+
+        <q-card class="q-mt-md q-ml-md" style="width:80%">
+          <q-card-section>
+            <h2>Ajouter une tache</h2>
+            <q-input label="Titre" type="text" outlined class="q-mb-md" v-model="tasktForm.title" />
+            <q-input label="Description" type="text" outlined class="q-mb-md" v-model="taskForm.description" />
+            <q-input label="Titre" type="text" outlined class="q-mb-md" v-model="taskForm.type" />
+            <q-select label="Liste" outlined rounded class="q-mb-md" v-model="taskForm.list" emit-value map-options  :options="listData" option-label="title" option-value="_id" />
+            <q-btn label="Créer" class="full-width" color="primary" @click="createTask"/>
+          </q-card-section>
+        </q-card>
+    </div>
+  </div>
+</template>
+<script setup>
+
+import { useUserStore } from 'src/stores/user-store'
+import { useListStore } from 'src/stores/lists-store'
+import { useTaskStore } from 'src/stores/tasks-store'
+import { computed, onMounted, ref } from 'vue'
+import { Notify } from 'quasar'
+
+const userStore = useUserStore()
+const userData = computed(() => userStore.user)
+const listStore = useListStore()
+const listData = computed(() => listStore.list)
+const taskStore = useTaskStore()
+// const taskData = computed(() => taskStore.list)
+
+const listForm = ref({
+  title: '',
+  description: ''
+})
+const taskForm = ref({
+  title: '',
+  description: '',
+  type: '',
+  list: ''
+})
+
+const createList = async () => {
+  try {
+    await listStore.createList(listForm.value)
+    Notify.create('Liste créée')
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const createTask = async () => {
+  try {
+    await taskStore.createTask(taskForm.value)
+    Notify.create('Task créée')
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+onMounted(async () => {
+  await userStore.loadUser()
+  await listStore.getLists()
+})
+</script>

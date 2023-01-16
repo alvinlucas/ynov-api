@@ -9,9 +9,12 @@ const listSchema = new Schema({
   },
   tasks: [{
     type : Schema.Types.ObjectId,
-    ref: 'task',
-    select : false
-  }]
+    ref: 'task'
+    }],
+  user: {
+    type : Schema.Types.ObjectId,
+    ref: 'user'
+  }
 }, {
   timestamps: true
 })

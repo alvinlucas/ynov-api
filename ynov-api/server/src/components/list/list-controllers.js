@@ -6,7 +6,7 @@ import Joi from 'Joi'
 export async function index (ctx) {
   try {
     const user = ctx.state.user;
-    const lists = await ListModel.findByUserId(user._id)
+    const lists = await ListModel.findByUserId(ctx.state.user._id)
     ctx.ok(lists)
   } catch (e) {
     ctx.badRequest({ message: e.message })
@@ -33,7 +33,7 @@ export async function create (ctx) {
     })
     const { error, value } = listValidationSchema.validate(ctx.request.body)
     if(error) throw new Error(error)
-    const newList = await ListModel.create(value)
+    const newList = await ListModel.create({...value,user:ctx.state.user})
     ctx.ok(newList)
   } catch (e) {
     ctx.badRequest({ message: e.message })
@@ -61,7 +61,7 @@ export async function destroy (ctx) {
   try {
     if(!ctx.params.id) throw new Error('No id supplied')
     // await TaskModel.deleteMany({ list:})
-    await ListModel.findByIdAndDelete(ctx.params.id)
+    await ListModel.findOneAndDelete({_id:ctx.params.id,user: ctx.state.user._id})
     ctx.ok('Ressource deleted')
   } catch (e) {
     ctx.badRequest({ message: e.message })

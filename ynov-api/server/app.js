@@ -7,10 +7,12 @@ import Koa from 'koa'
 import bodyParser from 'koa-bodyparser'
 import respond from 'koa-respond'
 import { API_V1_ROUTER } from '#routes/index.js'
-
+import cors from '@koa/cors'
+ 
 const app = new Koa()
 
 app
+.use(cors('*'))
 .use(bodyParser())
 .use(respond())
 .use(API_V1_ROUTER.routes())
