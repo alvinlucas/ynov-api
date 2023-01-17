@@ -11,7 +11,7 @@ export const useTaskStore = defineStore('task', {
     async getAllTasks () {
       try {
         const res = await getAllTasks()
-        this.list = res
+        this.task = res
       } catch (e) {
         throw new Error(e)
       }

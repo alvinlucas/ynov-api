@@ -19,12 +19,12 @@ export const createList = async (params) => {
     throw error
   }
 }
-// export const deleteList = async (params) => {
-//   try {
-//     const response = await api.post('/lists', params)
-//     return response.data
-//   } catch (error) {
-//     console.log(error)
-//     throw error
-//   }
-// }
+export const deleteList = async (id) => {
+  try {
+    const response = await api.delete(`/lists/${id}`)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}

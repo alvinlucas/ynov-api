@@ -49,10 +49,11 @@
               <q-menu cover auto-close>
                 <q-list>
                   <q-item clickable>
-                    <q-item-section style="color:red">Supprimer liste</q-item-section>
+                    <q-item-section style="color:red" @click="deleteList(list._id)">Supprimer liste</q-item-section>
                   </q-item>
                   <q-item clickable>
-                    <q-item-section>Modifier liste</q-item-section>
+                    <q-item-section @click="showDialog()">Modifier liste</q-item-section>
+                    <q-dialog v-label="modal" ref="dialogOpen" :list-id="listId"><q-card-section>d</q-card-section></q-dialog>
                   </q-item>
                 </q-list>
               </q-menu>
@@ -61,8 +62,19 @@
       </q-card-section>
 
       <q-card-actions vertical align="center">
-        <q-btn flat>Action 1</q-btn>
-        <q-btn flat>Action 2</q-btn>
+        <q-btn flat></q-btn>
+        <div v-for="task in taskData" :key="task.id">
+          {{ taskData }}
+                  <q-btn outlined class="q-my-sm q-mx-sm q-py-sm q-px-sm" color="primary" >{{ task.title }}</q-btn>
+                  <span label="Done" @click="deleteTask(task._id)">
+                    <span v-if="task.activityDone">
+                      <q-checkbox color="green" @click="handleUnvalid(task._id)" />
+                    </span>
+                    <span v-else>
+                      <q-checkbox color="red" @click="handleValidate(task._id)" />
+                    </span>
+                  </span>
+                </div>
         <q-btn flat>Voir la liste complète</q-btn>
       </q-card-actions>
     </q-card>
@@ -84,9 +96,7 @@
         <q-card class="q-mt-md q-ml-md" style="width:80%">
           <q-card-section>
             <h2>Ajouter une tache</h2>
-            <q-input label="Titre" type="text" outlined class="q-mb-md" v-model="tasktForm.title" />
-            <q-input label="Description" type="text" outlined class="q-mb-md" v-model="taskForm.description" />
-            <q-input label="Titre" type="text" outlined class="q-mb-md" v-model="taskForm.type" />
+            <q-input label="Titre" type="text" outlined class="q-mb-md" v-model="taskForm.title" />
             <q-select label="Liste" outlined rounded class="q-mb-md" v-model="taskForm.list" emit-value map-options  :options="listData" option-label="title" option-value="_id" />
             <q-btn label="Créer" class="full-width" color="primary" @click="createTask"/>
           </q-card-section>
@@ -109,14 +119,15 @@ const listData = computed(() => listStore.list)
 const taskStore = useTaskStore()
 // const taskData = computed(() => taskStore.list)
 
+const dialogOpen = ref(false)
+const listId = ref(null)
+
 const listForm = ref({
   title: '',
   description: ''
 })
 const taskForm = ref({
   title: '',
-  description: '',
-  type: '',
   list: ''
 })
 
@@ -128,11 +139,28 @@ const createList = async () => {
     console.log(err)
   }
 }
+const deleteList = async (id) => {
+  try {
+    await listStore.deleteList(id)
+    Notify.create('Liste supprimé')
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 const createTask = async () => {
   try {
     await taskStore.createTask(taskForm.value)
     Notify.create('Task créée')
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const showDialog = (id) => {
+  try {
+    this.dialogOpen.value = true
+    this.listId = id
   } catch (err) {
     console.log(err)
   }

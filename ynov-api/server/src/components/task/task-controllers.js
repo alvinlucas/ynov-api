@@ -22,8 +22,8 @@ export async function create (ctx){
     try{
     const taskValidationSchema = Joi.object({
         title: Joi.string().required(),
-        description: Joi.string().required(),
-        type: Joi.string().required(),
+        description: Joi.string(),
+        type: Joi.string(),
         date: Joi.date().timestamp(),
         list: Joi.string().required()
     })
