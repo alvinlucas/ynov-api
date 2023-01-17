@@ -8,8 +8,22 @@
             <h4>Mes listes</h4>
           </div>
           <div class="col-auto">
-            <q-btn outline style="color: purple;" label="+" />
-          </div>
+                <q-btn outline style="color: purple;" label="+"  @click="creeList = true" />
+            <q-dialog v-model="creeList" persistent>
+              <q-card style="min-width: 350px">
+                <q-card-section>
+                  <h2>Ajouter une liste</h2>
+                  <br>
+                  <q-input label="Titre" type="text" outlined class="q-mb-md" v-model="listForm.title" />
+                  <q-input label="Description" type="text" outlined class="q-mb-md" v-model="listForm.description" />
+                </q-card-section>
+                <q-card-actions align="right" class="text-primary">
+                  <q-btn flat label="Cancel" v-close-popup />
+                  <q-btn flat label="Créer" color="primary" @click="createList" v-close-popup />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
+        </div>
         </div>
       </q-card-section>
 
@@ -36,9 +50,23 @@
       </h1>
 
       <div style="margin-bottom: 20px;">Tu n’as aucune liste de tâche pour le moment créer en une en cliquant sur le bouton ci-dessous dans le menu pour débuter</div>
-    <div class="q-pa-md q-gutter-sm">
-      <q-btn style="background: purple; color: white" label="Créer une liste"  @click="btnListe" />
-  </div>
+  <div style="font-weight: bold;margin-left: 30%;">
+    <q-btn style="background: purple; color: white" label="Créer une liste"  @click="creeList = true" />
+            <q-dialog v-model="creeList" persistent>
+              <q-card style="min-width: 350px">
+                <q-card-section>
+                  <h2>Ajouter une liste</h2>
+                  <br>
+                  <q-input label="Titre" type="text" outlined class="q-mb-md" v-model="listForm.title" />
+                  <q-input label="Description" type="text" outlined class="q-mb-md" v-model="listForm.description" />
+                </q-card-section>
+                <q-card-actions align="right" class="text-primary">
+                  <q-btn flat label="Cancel" v-close-popup />
+                  <q-btn flat label="Créer" color="primary" @click="createList" v-close-popup />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
+        </div>
 
   <div style="font-weight: bold;margin: 40px;">
     <div v-for="list in listData" :key="list._id">
@@ -52,8 +80,8 @@
                     <q-item-section style="color:red" @click="deleteList(list._id)">Supprimer liste</q-item-section>
                   </q-item>
                   <q-item clickable>
-                    <q-item-section @click="showDialog()">Modifier liste</q-item-section>
-                    <q-dialog v-label="modal" ref="dialogOpen" :list-id="listId"><q-card-section>d</q-card-section></q-dialog>
+                    <q-item-section @click="dialogOpen = true">Modifier liste</q-item-section>
+                    <q-dialog v-label="modal" @click="showDialog = true" :list-id="listId"><q-card-section>d</q-card-section></q-dialog>
                   </q-item>
                 </q-list>
               </q-menu>
@@ -64,8 +92,7 @@
       <q-card-actions vertical align="center">
         <q-btn flat></q-btn>
         <div v-for="task in taskData" :key="task.id">
-          {{ taskData }}
-                  <q-btn outlined class="q-my-sm q-mx-sm q-py-sm q-px-sm" color="primary" >{{ task.title }}</q-btn>
+                  <q-btn outlined class="q-my-sm q-mx-sm q-py-sm q-px-sm" color="primary" ></q-btn>
                   <span label="Done" @click="deleteTask(task._id)">
                     <span v-if="task.activityDone">
                       <q-checkbox color="green" @click="handleUnvalid(task._id)" />
@@ -83,24 +110,22 @@
       </div>
   </div>
 
-    <div class="col">
-        <q-card class="q-mt-md q-ml-md" style="width:80%">
-          <q-card-section>
-            <h2>Ajouter une liste</h2>
-            <q-input label="Titre" type="text" outlined class="q-mb-md" v-model="listForm.title" />
-            <q-input label="Description" type="text" outlined class="q-mb-md" v-model="listForm.description" />
-            <q-btn label="Créer" class="full-width" color="primary" @click="createList"/>
-          </q-card-section>
-        </q-card>
-
-        <q-card class="q-mt-md q-ml-md" style="width:80%">
+    <div class="col" style="margin-top:5%">
+        <div style="font-weight: bold;margin-left: 30%;">
+    <q-btn style="background: purple; color: white" label="Créer une tache"  @click="creeTask = true" />
+            <q-dialog v-model="creeTask" persistent>
+              <q-card class="q-mt-md q-ml-md" style="width:80%">
           <q-card-section>
             <h2>Ajouter une tache</h2>
+            <br>
             <q-input label="Titre" type="text" outlined class="q-mb-md" v-model="taskForm.title" />
             <q-select label="Liste" outlined rounded class="q-mb-md" v-model="taskForm.list" emit-value map-options  :options="listData" option-label="title" option-value="_id" />
-            <q-btn label="Créer" class="full-width" color="primary" @click="createTask"/>
+            <q-btn flat label="Cancel" v-close-popup />
+            <q-btn flat label="Créer" color="primary" @click="createTask" v-close-popup />
           </q-card-section>
         </q-card>
+            </q-dialog>
+        </div>
     </div>
   </div>
 </template>
@@ -121,6 +146,8 @@ const taskStore = useTaskStore()
 
 const dialogOpen = ref(false)
 const listId = ref(null)
+const creeList = ref(false)
+const creeTask = ref(false)
 
 const listForm = ref({
   title: '',
