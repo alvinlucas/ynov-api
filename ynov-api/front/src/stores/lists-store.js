@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getAllLists, createList, deleteList } from 'src/services/lists'
+import { getAllLists, createList, deleteList, updateList } from 'src/services/lists'
 
 export const useListStore = defineStore('list', {
   state: () => ({
@@ -27,6 +27,14 @@ export const useListStore = defineStore('list', {
     async deleteList (id) {
       try {
         await deleteList(id)
+        this.getLists()
+      } catch (e) {
+        throw new Error(e)
+      }
+    },
+    async updateList (id) {
+      try {
+        await updateList(id)
         this.getLists()
       } catch (e) {
         throw new Error(e)

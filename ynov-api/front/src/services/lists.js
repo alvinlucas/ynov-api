@@ -28,3 +28,13 @@ export const deleteList = async (id) => {
     throw error
   }
 }
+
+export const updateList = async (id) => {
+  try {
+    const response = await api.put(`/lists/${id}`)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
